@@ -7,17 +7,17 @@ A minimalist console P2P chat in Python for direct messaging between two nodes.
 ### 1. Host (Node A)
 Run the script to listen for incoming connections:
 ```bash
-python3 peer.py -l -v
+py client.py -l -v
 ```
 
 ### 2. Client (Node B)
 Connect to Node A by specifying its IP address:
 ```bash
 # Local test on the same machine
-python3 peer.py -c 127.0.0.1 -v
+py client.py -c 127.0.0.1 -v
 
 # Remote connection
-python3 peer.py -c <NODE_A_IP> -v
+py client.py -c <NODE_A_IP> -v
 ```
 
 ### Exit
