@@ -5,12 +5,12 @@ import sys
 
 
 def recv_loop(sock, verbose):
-    """Приём сообщений в отдельном потоке."""
+    """Odbieranie wiadomości w osobnym wątku."""
     try:
         while True:
             data = sock.recv(4096)
             if not data:
-                print("\n[*] Соединение закрыто")
+                print("\n[*] Połączenie zamknięte")
                 break
             msg = data.decode("utf-8", errors="replace")
             print(f"\r<< {msg}\n> ", end="", flush=True)
@@ -19,7 +19,7 @@ def recv_loop(sock, verbose):
 
 
 def send_loop(sock, verbose):
-    """Отправка из stdin."""
+    """Wysyłanie wiadomości ze standardowego wejścia."""
     try:
         while True:
             msg = input("> ")
@@ -38,9 +38,9 @@ def send_loop(sock, verbose):
 
 
 def run_peer(sock, verbose):
-    """Общая логика после установки соединения."""
+    """Główna logika po nawiązaniu połączenia."""
     if verbose:
-        print("[*] P2P-соединение установлено. Пиши сообщения, /q — выход.")
+        print("[*] Połączenie P2P nawiązane. Wpisz wiadomości, /q — wyjście.")
 
     t = threading.Thread(target=recv_loop, args=(sock, verbose), daemon=True)
     t.start()
@@ -50,47 +50,47 @@ def run_peer(sock, verbose):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="P2P узел: либо слушает, либо подключается"
+        description="Węzeł P2P: słuchanie lub połączenie z innym węzłem"
     )
     parser.add_argument("-H", "--host", default="0.0.0.0",
-                        help="Адрес для прослушивания (режим --listen)")
+                        help="Adres do słuchania (tryb --listen)")
     parser.add_argument("-p", "--port", type=int, default=9000,
-                        help="Порт (по умолчанию 9000)")
+                        help="Port (domyślnie 9000)")
     parser.add_argument("-c", "--connect", metavar="HOST",
-                        help="Подключиться к удалённому узлу (режим клиента)")
+                        help="Połącz się ze zdalnym węzłem (tryb klienta)")
     parser.add_argument("-l", "--listen", action="store_true",
-                        help="Ждать входящее подключение")
+                        help="Oczekuj na połączenie przychodzące")
     parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Подробный вывод")
+                        help="Szczegółowe dane wyjściowe")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
 
- 
+    # Tryb połączenia
     if args.connect:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             sock.connect((args.connect, args.port))
         except ConnectionRefusedError:
-            print(f"[!] Не удалось подключиться к {args.connect}:{args.port}")
+            print(f"[!] Nie udało się połączyć z {args.connect}:{args.port}")
             sys.exit(1)
         if args.verbose:
-            print(f"[*] Подключено к {args.connect}:{args.port}")
+            print(f"[*] Połączono z {args.connect}:{args.port}")
         run_peer(sock, args.verbose)
 
-
+    # Tryb słuchania
     elif args.listen:
         srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         srv.bind((args.host, args.port))
         srv.listen(1)
-        print(f"[*] Жду подключения на {args.host}:{args.port}")
+        print(f"[*] Oczekiwanie na połączenie na {args.host}:{args.port}")
         conn, addr = srv.accept()
         srv.close()
         if args.verbose:
-            print(f"[*] Подключился {addr}")
+            print(f"[*] Połączył się {addr}")
         run_peer(conn, args.verbose)
 
     else:

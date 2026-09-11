@@ -1,31 +1,31 @@
-# Simple P2P Chat
+# Prosty czat P2P
 
-A minimalist console P2P chat in Python for direct messaging between two nodes.
+Minimalistyczny czat konsolowy P2P w Pythonie do bezpośredniej wymiany wiadomości między dwoma węzłami.
 
-## Quick Start
+## Szybki start
 
-### 1. Host (Node A)
-Run the script to listen for incoming connections:
+### 1. Host (Węzeł A)
+Uruchom skrypt, aby słuchać przychodzących połączeń:
 ```bash
 py client.py -l -v
 ```
 
-### 2. Client (Node B)
-Connect to Node A by specifying its IP address:
+### 2. Klient (Węzeł B)
+Połącz się z węzłem A, podając jego adres IP:
 ```bash
-# Local test on the same machine
+# Test lokalny na tej samej maszynie
 py client.py -c 127.0.0.1 -v
 
-# Remote connection
-py client.py -c <NODE_A_IP> -v
+# Połączenie zdalne
+py client.py -c <IP_WĘZŁA_A> -v
 ```
 
-### Exit
-Type `/q`, `exit`, or `quit` to disconnect.
+### Wyjście
+Wpisz `/q`, `exit` lub `quit`, aby się rozłączyć.
 
-## Troubleshooting
-* **Firewall block:** Open the port on Linux using `sudo ufw allow 9000/tcp`.
-* **Port collision:** Change the default port with `-p` (e.g., `-p 9500`).
+## Rozwiązywanie problemów
+* **Blokada zapory sieciowej:** Otwórz port w systemie Linux za pomocą `sudo ufw allow 9000/tcp`.
+* **Konflikt portów:** Zmień port domyślny za pomocą `-p` (np. `-p 9500`).
 
-## Author
-Developed by HpeS
+## Autor
+Opracowano przez HpeS
