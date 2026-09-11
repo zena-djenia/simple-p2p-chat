@@ -19,7 +19,7 @@ def recv_loop(sock, verbose):
 
 
 def send_loop(sock, verbose):
-    """Отправка из stdin."""
+    """Отправка сообщений из stdin."""
     try:
         while True:
             msg = input("> ")
@@ -38,9 +38,9 @@ def send_loop(sock, verbose):
 
 
 def run_peer(sock, verbose):
-    """Общая логика после установки соединения."""
+    """Основная логика после установления соединения."""
     if verbose:
-        print("[*] P2P-соединение установлено. Пиши сообщения, /q — выход.")
+        print("[*] P2P-соединение установлено. Пишите сообщения, /q — выход.")
 
     t = threading.Thread(target=recv_loop, args=(sock, verbose), daemon=True)
     t.start()
@@ -50,7 +50,7 @@ def run_peer(sock, verbose):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="P2P узел: либо слушает, либо подключается"
+        description="P2P узел: прослушивание или подключение к другому узлу"
     )
     parser.add_argument("-H", "--host", default="0.0.0.0",
                         help="Адрес для прослушивания (режим --listen)")
@@ -59,7 +59,7 @@ def main():
     parser.add_argument("-c", "--connect", metavar="HOST",
                         help="Подключиться к удалённому узлу (режим клиента)")
     parser.add_argument("-l", "--listen", action="store_true",
-                        help="Ждать входящее подключение")
+                        help="Ожидать входящее подключение")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Подробный вывод")
     args = parser.parse_args()
@@ -68,7 +68,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
- 
+    # Режим подключения
     if args.connect:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
@@ -80,13 +80,13 @@ def main():
             print(f"[*] Подключено к {args.connect}:{args.port}")
         run_peer(sock, args.verbose)
 
-
+    # Режим прослушивания
     elif args.listen:
         srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         srv.bind((args.host, args.port))
         srv.listen(1)
-        print(f"[*] Жду подключения на {args.host}:{args.port}")
+        print(f"[*] Ожидание подключения на {args.host}:{args.port}")
         conn, addr = srv.accept()
         srv.close()
         if args.verbose:

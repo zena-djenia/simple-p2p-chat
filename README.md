@@ -1,31 +1,31 @@
-# Simple P2P Chat
+# Простой P2P чат
 
-A minimalist console P2P chat in Python for direct messaging between two nodes.
+Минималистичный консольный P2P чат на Python для прямого обмена сообщениями между двумя узлами.
 
-## Quick Start
+## Быстрый старт
 
-### 1. Host (Node A)
-Run the script to listen for incoming connections:
+### 1. Хост (Узел A)
+Запустите скрипт для прослушивания входящих соединений:
 ```bash
 py client.py -l -v
 ```
 
-### 2. Client (Node B)
-Connect to Node A by specifying its IP address:
+### 2. Клиент (Узел B)
+Подключитесь к узлу A, указав его IP-адрес:
 ```bash
-# Local test on the same machine
+# Локальный тест на одной машине
 py client.py -c 127.0.0.1 -v
 
-# Remote connection
-py client.py -c <NODE_A_IP> -v
+# Удалённое соединение
+py client.py -c <IP_УЗЛА_A> -v
 ```
 
-### Exit
-Type `/q`, `exit`, or `quit` to disconnect.
+### Выход
+Наберите `/q`, `exit` или `quit` для отключения.
 
-## Troubleshooting
-* **Firewall block:** Open the port on Linux using `sudo ufw allow 9000/tcp`.
-* **Port collision:** Change the default port with `-p` (e.g., `-p 9500`).
+## Решение проблем
+* **Блокировка брандмауэром:** Откройте порт на Linux командой `sudo ufw allow 9000/tcp`.
+* **Конфликт портов:** Измените стандартный порт с помощью `-p` (например, `-p 9500`).
 
-## Author
-Developed by HpeS
+## Автор
+Разработано HpeS
