@@ -72,8 +72,9 @@ def main():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             sock.connect((args.connect, args.port))
-        except ConnectionRefUsedError:
+        except (ConnectionRefusedError, TimeoutError, OSError):
             print(f"[!] Failed to connect to {args.connect}:{args.port}")
+            sock.close()
             sys.exit(1)
         if args.verbose:
             print(f"[*] Connected to {args.connect}:{args.port}")
